@@ -29,7 +29,7 @@ trait ExceptionTrait
                 'errors' => $errors
             ], 422 );
         }
-        dd($e);
+        
         if($e instanceof HttpException) {
             
             return response()->json([

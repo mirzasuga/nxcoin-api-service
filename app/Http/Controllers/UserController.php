@@ -39,32 +39,34 @@ class UserController extends Controller
         /**
          * check RegisterMiddleware for validating refferal
          */
+        $starttime = microtime(true);
 
         $this->validate($request, [
-            'username' => 'required|unique:users',
-            'password' => 'required|min:6',
-            'email' => 'required|email|unique:users'
+
+            'name'          => 'required',
+            'username'      => 'required|unique:users',
+            'password'      => 'required|min:6',
+            'email'         => 'required|email|unique:users'
+        
         ]);
         
-        $user = User::create([
-
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Crypt::encrypt($request->password),
-            'api_token' => User::GenToken(),
-            'confirmation_code' => User::GenConfirmationCode(),
-
-        ]);
+        $user = UserService::store($request);
         
         event( new UserRegistered($user) );
+        
+        $endtime = microtime(true);
+
+        $timediff = $endtime - $starttime;
 
         return response()->json([
+
             'status' => 1,
             'data' => [
                 'user' => $user
             ],
-            'message' => 'register success'
+            'message' => 'register success',
+            'execution_time' => $timediff
+            
         ]);
 
     }

@@ -29,4 +29,22 @@ class UserService
         return $user;
     }
 
+    public static function store(Request $request) {
+        
+        $user = User::create([
+
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Crypt::encrypt($request->password),
+            'api_token' => User::GenToken(),
+            'confirmation_code' => User::GenConfirmationCode(),
+
+        ]);
+        
+        if(!$user) throw new HttpException('Registration failed', 500);
+
+        return $user;
+    }
+
 }
