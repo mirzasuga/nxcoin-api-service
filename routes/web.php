@@ -28,6 +28,26 @@ $router->group(['prefix' => 'user'], function() use ($router) {
         'middleware' => 'register'
     ]);
 
+    $router->get('list', [
+        'uses' => 'UserController@list',
+        'as' => 'user.list',
+        'middleware' => ['auth','asAdmin']
+    ]);
+
+});
+
+$router->group(['prefix' => 'management'], function() use($router) {
+
+    $router->group(['prefix' => 'user-role'], function() use($router) {
+        
+        $router->put('add', [
+            'uses' => 'Admin\RoleController@addUserRole',
+            'as' => 'management.user_role.addUserRole',
+            'middleware' => [ 'auth', 'asAdmin']
+        ]);
+
+    });
+
 });
 
 $router->group(['prefix' => 'register'], function() use ($router) {

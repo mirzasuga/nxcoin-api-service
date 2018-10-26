@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Illuminate\Support\Facades\Crypt;
 class UserService
 {
@@ -30,21 +31,22 @@ class UserService
     }
 
     public static function store(Request $request) {
-        
-        $user = User::create([
 
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Crypt::encrypt($request->password),
-            'api_token' => User::GenToken(),
-            'confirmation_code' => User::GenConfirmationCode(),
-
-        ]);
+        $user = new User();
+        $role = Role::member()->first();
+        $user->name                 = $request->name;
+        $user->username             = $request->username;
+        $user->email                = $request->email;
+        $user->password             = Crypt::encrypt($request->password);
+        $user->api_token            = User::GenToken();
+        $user->confirmation_code    = User::GenConfirmationCode();
         
-        if(!$user) throw new HttpException('Registration failed', 500);
+        if(!$user->save()) throw new HttpException('Registration failed', 500);
+        
+        $user->roles()->attach($role->id);
 
         return $user;
+        
     }
 
 }

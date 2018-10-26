@@ -25,7 +25,7 @@ class UserController extends Controller
     public function login(Request $request) {
 
         $user = UserService::attempLogin($request);
-
+        
         return response()->json([
             'status' => 1,
             'data' => ['user' => $user]
@@ -66,7 +66,7 @@ class UserController extends Controller
             ],
             'message' => 'register success',
             'execution_time' => $timediff
-            
+
         ]);
 
     }
@@ -76,7 +76,14 @@ class UserController extends Controller
     }
 
     public function list(Request $request) {
-
+        
+        return response()->json([
+            'status' => 1,
+            'data' => [
+                'users' => User::get()
+            ]
+        ]);
+        
     }
 
     public function banned($id) {

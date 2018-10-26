@@ -69,7 +69,9 @@ $app->singleton(
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
-    'register' => App\Http\Middleware\RegisterMiddleware::class
+    'register' => App\Http\Middleware\RegisterMiddleware::class,
+    'asAdmin' => App\Http\Middleware\AsAdminMiddleware::class,
+    'role.update' => App\Http\Middleware\RoleUpdateMiddleware::class,
 ]);
 
 /*

@@ -38,6 +38,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    public function roles() {
+
+        return $this->belongsToMany('App\Role','user_group', 'user_id', 'role_id');
+
+    }
+
     
 
     public function getPassdecryptedAttribute() {
