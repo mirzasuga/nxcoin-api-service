@@ -29,3 +29,12 @@ $router->group(['prefix' => 'user'], function() use ($router) {
     ]);
 
 });
+
+$router->group(['prefix' => 'register'], function() use ($router) {
+    
+    $router->get('confirm',[
+        'uses' => 'RegisterController@confirm',
+        'as' => 'register.confirm'
+    ]);
+
+});

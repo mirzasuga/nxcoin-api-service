@@ -33,7 +33,7 @@ class UserRegistered extends Mailable implements ShouldQueue
     {
         return $this->view('mail.user.confirmation')
         ->with([
-            'email' => $this->user->email
+            'user' => $this->user
         ]);
     }
 }

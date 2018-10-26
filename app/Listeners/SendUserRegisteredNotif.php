@@ -6,8 +6,8 @@ use App\Events\UserRegistered;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\UserRegistered as UserRegisteredMail;
+use App\Jobs\SendUserMailJob;
+
 
 
 class SendUserRegisteredNotif implements ShouldQueue
@@ -30,6 +30,6 @@ class SendUserRegisteredNotif implements ShouldQueue
      */
     public function handle(UserRegistered $event)
     {
-        Mail::to($event->user->email)->queue(new UserRegisteredMail($event->user) );
+        dispatch(new SendUserMailJob($event->user));
     }
 }
